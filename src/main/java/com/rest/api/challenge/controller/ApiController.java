@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rest.api.challenge.model.GrupoLiquidacaoModel;
+import com.rest.api.challenge.model.GrupoProdutoModel;
 import com.rest.api.challenge.model.SLC0001Model;
+import com.rest.api.challenge.repository.GrupoProdutoRepository;
 import com.rest.api.challenge.service.MovimentacaoService;
 
 @RestController
@@ -39,10 +41,20 @@ public class ApiController {
 	}
 	
 	@GetMapping(value = "/v1/movimentacao/{idMovimentacao}/liquidacao/{idLiquidacao}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GrupoLiquidacaoModel> getLiquidacoesPeloIdDaMovimentacao(@PathVariable("idMovimentacao") Integer idMovimentacao, @PathVariable("idLiquidacao") Integer idLiquidacao){
+	public ResponseEntity<GrupoLiquidacaoModel> getLiquidacoesPeloId(@PathVariable("idMovimentacao") Integer idMovimentacao, @PathVariable("idLiquidacao") Integer idLiquidacao){
 		GrupoLiquidacaoModel liquidacao = movimentacaoService.listaLiquidacaoPorId(idMovimentacao, idLiquidacao);
 		return new ResponseEntity<>(liquidacao, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/v1/movimentacao/{idMovimentacao}/liquidacao/{idLiquidacao}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<GrupoProdutoModel>> getProdutosPeloIdDaLiquidacao(@PathVariable("idMovimentacao") Integer idMovimentacao, @PathVariable("idLiquidacao") Integer idLiquidacao){
+		List<GrupoProdutoModel> produtos = movimentacaoService.listaProdutos(idMovimentacao, idLiquidacao);
+		return new ResponseEntity<>(produtos, HttpStatus.OK);
+	}
 	
+	@GetMapping(value = "/v1/movimentacao/{idMovimentacao}/liquidacao/{idLiquidacao}/produto/{idProduto}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GrupoProdutoModel> getProdutosPeloId(@PathVariable("idMovimentacao") Integer idMovimentacao, @PathVariable("idLiquidacao") Integer idLiquidacao, @PathVariable("idProduto") Integer idProduto){
+		GrupoProdutoModel produto = movimentacaoService.listaProdutoPorId(idMovimentacao, idProduto, idProduto);
+		return new ResponseEntity<>(produto, HttpStatus.OK);
+	}
 }

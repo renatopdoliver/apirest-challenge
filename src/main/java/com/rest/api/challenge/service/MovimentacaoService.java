@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rest.api.challenge.model.GrupoLiquidacaoModel;
+import com.rest.api.challenge.model.GrupoProdutoModel;
 import com.rest.api.challenge.model.SLC0001Model;
 import com.rest.api.challenge.repository.MovimentacaoRepository;
 
@@ -30,6 +31,15 @@ public class MovimentacaoService {
 	
 	public GrupoLiquidacaoModel listaLiquidacaoPorId(Integer idMov, Integer idLiquid){
 		return movimentacaoRepository.findLiquidacaoById(idMov, idLiquid);
+	}
+	
+	public List<GrupoProdutoModel> listaProdutos(Integer idMov, Integer idLiquid){
+		GrupoLiquidacaoModel liquidacao =  movimentacaoRepository.findLiquidacaoById(idMov, idLiquid);
+		return liquidacao.getProduto();
+	}
+	
+	public GrupoProdutoModel listaProdutoPorId(Integer idMov, Integer idLiquid, Integer idProduto){
+		return movimentacaoRepository.findProdutoById(idMov, idLiquid, idProduto);
 	}
 	
 }
